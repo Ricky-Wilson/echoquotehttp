@@ -4,7 +4,7 @@ a HTTP request from scratch with the socket module.
 """
 
 __author__ = "Ricky L Wilson."
-
+__email__ = "echoquote@gmail.com"
 
 import socket
 
