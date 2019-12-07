@@ -3,6 +3,7 @@ This module is a demonstration of how to send
 a HTTP request from scratch with the socket module.
 """
 import socket
+import json
 
 __author__ = "Ricky L Wilson."
 __email__ = "echoquote@gmail.com"
@@ -34,15 +35,11 @@ def send_request(host=HOST, path=PATH, port=PORT):
     """
     Send an HTTP GET request.
     """
-    # Create the HTTP request header.
-    request = request_header(host, path)
 
-    # Connect to the server
+    # Connect to the server and send the request.
     sock = socket.socket()
     sock.connect((host, port))
-
-    # Send an HTTP request
-    sock.send(request)
+    sock.send(request_header(host, path))
 
     # Get the response (in several parts, if necessary)
     response = ''
@@ -55,4 +52,10 @@ def send_request(host=HOST, path=PATH, port=PORT):
     return response.partition(CRLF + CRLF)
 
 
-print(send_request(host="www.google.com")[0])
+header = send_request(host="www.google.com")[0].decode('utf-8')
+values = header.split('\r')
+code = values.pop(0)
+
+print(code)
+for v in values:
+    print(v.split(':', 1))
