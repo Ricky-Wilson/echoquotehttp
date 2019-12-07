@@ -31,25 +31,30 @@ def request_header(host=HOST, path=PATH):
       "Host: {}".format(host),
       "Connection: Close\r\n\r\n"])
 
+
 def send_request(host=HOST, path=PATH, port=PORT):
+    """
+    Send an HTTP GET request.
+    """
+    # Create the HTTP request header.
     request = request_header(host, path)
-    print request
 
     # Connect to the server
-    s = socket.socket()
-    s.connect((host, PORT))
+    sock = socket.socket()
+    sock.connect((host, port))
 
     # Send an HTTP request
-    s.send(request)
+    sock.send(request)
 
     # Get the response (in several parts, if necessary)
     response = ''
-    chuncks = s.recv(4096)
+    chuncks = sock.recv(4096)
     while chuncks:
         response += chuncks
-        chuncks = s.recv(4096)
+        chuncks = sock.recv(4096)
 
     # HTTP headers will be separated from the body by an empty line
-    header_data, _, body = response.partition(CRLF + CRLF)
-    print(header_data)
-    print(body)
+    return response.partition(CRLF + CRLF)
+    
+
+print(send_request())
