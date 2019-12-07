@@ -57,4 +57,4 @@ def send_request(host=HOST, path=PATH, port=PORT):
     return response.partition(CRLF + CRLF)
     
 
-print(send_request())
+print(send_request(host="www.google.com")[0])
