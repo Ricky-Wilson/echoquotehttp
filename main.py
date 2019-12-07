@@ -1,3 +1,4 @@
+
 """
 This module is a demonstration of how to send
 a HTTP request from scratch with the socket module.
@@ -6,7 +7,6 @@ import socket
 
 __author__ = "Ricky L Wilson."
 __email__ = "echoquote@gmail.com"
-
 """
 The term CRLF refers to Carriage Return (ASCII 13, \r)
 Line Feed (ASCII 10, \n).
@@ -30,19 +30,25 @@ def request_header(host=HOST, path=PATH):
     ])
 
 
+def parse_header(header):
+    values = header.split('\r')
+    code = values.pop(0).split(' ')[1]
+    header = {}
+    for line in values:
+        k, v = line.split(':', 1)
+        header[k.lower()] = v
+    return header, code
+
+
 def send_request(host=HOST, path=PATH, port=PORT):
     """
     Send an HTTP GET request.
     """
-    # Create the HTTP request header.
-    request = request_header(host, path)
 
-    # Connect to the server
+    # Connect to the server and send the request.
     sock = socket.socket()
     sock.connect((host, port))
-
-    # Send an HTTP request
-    sock.send(request)
+    sock.send(request_header(host, path))
 
     # Get the response (in several parts, if necessary)
     response = ''
@@ -52,7 +58,9 @@ def send_request(host=HOST, path=PATH, port=PORT):
         chuncks = sock.recv(4096)
 
     # HTTP headers will be separated from the body by an empty line
-    return response.partition(CRLF + CRLF)
+    header, _, body = response.partition(CRLF + CRLF)
+    header, code = parse_header(header)
+    return header, code, body
 
 
-print(send_request(host="www.google.com")[0])
+print send_request()[1]
