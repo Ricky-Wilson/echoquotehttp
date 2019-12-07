@@ -1,4 +1,3 @@
-
 """
 This module is a demonstration of how to send
 a HTTP request from scratch with the socket module.
@@ -63,4 +62,3 @@ def send_request(host=HOST, path=PATH, port=PORT):
     return header, code, body
 
 
-print send_request()[1]
