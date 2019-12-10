@@ -21,7 +21,7 @@ PATH = "/"
 
 def request_header(host=HOST, path=PATH):
     """
-    Create the request header.
+    Create a request header.
     """
     return CRLF.join([
         "GET {} HTTP/1.1".format(path), "Host: {}".format(host),
@@ -44,12 +44,14 @@ def send_request(host=HOST, path=PATH, port=PORT):
     Send an HTTP GET request.
     """
 
-    # Connect to the server and send the request.
+    # Create the socket object.
     sock = socket.socket()
+    # Connect to the server.
     sock.connect((host, port))
+    # Send the request.
     sock.send(request_header(host, path))
 
-    # Get the response (in several parts, if necessary)
+    # Get the response.
     response = ''
     chuncks = sock.recv(4096)
     while chuncks:
