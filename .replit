@@ -1,0 +1,2 @@
+language = "python2"
+run = "python2 main.py"

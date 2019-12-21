@@ -110,4 +110,4 @@ def send_request(host=HOST, path=PATH, port=PORT):
 
 
 header, code, body  = send_request(host='www.google.com')
-print code, CRLF, body
+print (code, CRLF, body)
